@@ -1,0 +1,45 @@
+﻿@model MyForum.ViewModels.RegisterViewModel
+@{ 
+    ViewData["Title"] = "Регистрация";
+}
+
+<form asp-action="Register" asp-controller="Account">
+    <h5 class=" mt-5" style="color: #7F7F7F">РЕГИСТРАЦИЯ</h5>
+    <div style="background-color: white; border: 3px solid #d8e3e6; border-radius: 3px; box-shadow: none;" class="p-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger" style="text-decoration:none; list-style-type:none"></div>
+        <div class="form-group flex-column">
+            <label style="color: #8d9aa5;">Имя пользователя: </label>
+            <span class="text-danger" asp-validation-for="Name"></span>
+            <input type="text" class="form-control input-lg" asp-for="Name" placeholder="Name">
+        </div>
+        <div style="border: 1px dashed #c9c9c9" class="mt-3 mb-3"></div>
+        <div class="form-group flex-column">
+            <label style="color: #8d9aa5;">Почта: </label>
+            <span class="text-danger" asp-validation-for="Email"></span>
+            <input type="email" class="form-control input-lg" asp-for="Email" placeholder="Email">
+        </div>
+        <div style="border: 1px dashed #c9c9c9" class="mt-3 mb-3"></div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group flex-column">
+                    <label style="color: #8d9aa5;">Пароль: </label>
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                    <input type="password" class="form-control input-lg" asp-for="Password" placeholder="Password">
+                </div>
+                <div style="border: 1px dashed #c9c9c9" class="mt-3 mb-3"></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group flex-column">
+                    <label style="color: #8d9aa5;">Подтверждение пароля: </label>
+                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    <input type="password" class="form-control input-lg" asp-for="ConfirmPassword" placeholder="Password">
+                </div>
+                <div style="border: 1px dashed #c9c9c9" class="mt-3 mb-3"></div>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="reset" class="btn btn-primary">Очистить</button>
+            <button type="submit" class="btn btn-primary">Зарегестрироваться</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,121 @@
+﻿@model Tuple<Data.Models.User, MyForum.ViewModels.ChangePasswordViewModel>
+
+@{
+    var result = Model as Tuple<Data.Models.User, MyForum.ViewModels.ChangePasswordViewModel>;
+    ViewData["Title"] = result.Item1.Name;
+}
+
+<div class="row mt-5 p-2">
+    <div class="col-2">
+        <div class="p_menu nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Профиль</a>
+            <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Сообщения</a>
+            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Настройки</a>
+        </div>
+    </div>
+    <div class="col-10 p-3" style="background-color: white; border: 3px solid #d8e3e6;">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="media">
+                    <img src=@Model.Item1.Avatar.Path alt="Alternate Text" width="100 " height="100" class="mr-3 img-thumbnail" style="max-width:100px; max-height:100px;"/>
+                    <div class="media-body col-9">
+                        <h5 class="mt-0">@Model.Item1.Name</h5>
+                        <div>
+                            <p>@Model.Item1.Status</p>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">
+                                Изменить статус
+                            </button>
+                        </div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Изменение статуса</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="ChangeStatus" asp-controller="Account">
+                                        <div class="modal-body">
+                                            <input type="text" class="form-control input-lg" placeholder="Статус" asp-for="@Model.Item1.Status" name="status">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                            <button type="submit" class="btn btn-primary" asp-controller="Account" asp-action="ChangeStatus">Сохранить</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                <h2 class="text-center">Настройки</h2>
+                <div>
+                    <form asp-action="AddPhoto" asp-controller="Account" method="post" enctype="multipart/form-data">
+                        <h5>Аватар:</h5>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="uploadedFile" aria-describedby="inputGroupFileAddon04">
+                                <label class="custom-file-label" for="inputGroupFile04">Выберите фаил</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04" asp-controller="Account" asp-action="AddPhoto">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="media-body mt-4">
+                        <h5>Пароль:</h5>
+                        <label style="color: #8d9aa5;">Не работает! </label>
+                        <form method="post" asp-controller="Account" asp-action="Profile">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                                Сменить пароль
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div asp-validation-summary="All" class="text-danger" style="text-decoration:none; list-style-type:none"></div>
+                                            <div class="form-group flex-column">
+                                                <label style="color: #8d9aa5;">Текущий пароль: </label>
+                                                <input type="password" class="form-control input-lg" asp-for="Item2.CurentPassword" placeholder="Старый пароль" name="CurentPassword">
+                                                <span class="text-danger" asp-validation-for="Item2.CurentPassword"></span>
+                                            </div>
+                                            <div class="form-group flex-column">
+                                                <label style="color: #8d9aa5;">Новый пароль: </label>
+
+                                                <input type="password" class="form-control input-lg" asp-for="Item2.Password" placeholder="Новый пароль" name="Password">
+                                                <span class="text-danger" asp-validation-for="Item2.Password"></span>
+                                            </div>
+                                            <div class="form-group flex-column">
+                                                <label style="color: #8d9aa5;">Повтор нового пароля: </label>
+
+                                                <input type="password" class="form-control input-lg" asp-for="Item2.ConfirmPassword" placeholder="Повтор нового пароля" name="ConfirmPassword">
+                                                <span class="text-danger" asp-validation-for="Item2.ConfirmPassword"></span>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                            <button type="submit" class="btn btn-primary" asp-controller="Account" asp-action="ChangePassword">Сохранить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

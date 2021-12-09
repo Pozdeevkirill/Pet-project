@@ -1,0 +1,41 @@
+﻿@using Data.Models
+@model Tuple<Data.Models.User, MyForum.ViewModels.ChangePasswordViewModel, List<Data.Models.User>, List<Data.Models.Threads>>
+@{
+    var list = Model.Item3;
+    ViewData["Title"] = "Home Page";
+
+}
+
+
+<div class="col-12 p-3 mt-5 section border-color" >
+    <h5 class="border2 col-12 pb-3 ">Новые пользователи</h5>
+    <div class="list-group">
+        @foreach (var u in Model.Item3)
+        {
+        <a class="list-group-item list-group-item-action p-1 tab-pane d-flex flex-row justify-content-between list" asp-controller="Account" asp-action="UserView" asp-route-ID="@u.Id">
+            <div class="d-inline-flex ml-3">
+                <img src="@u.Avatar.Path" width="25" style="border-radius: 30px; height:25px" />
+                <div class="ml-2">@u.Name</div>
+            </div>
+            <div class="rounded-right text-right mr-3">@u.RegisterData.ToString("dd.MM.yyyy hh:mm")</div>
+        </a> 
+        }
+    </div>
+</div>
+<div class="col-12 p-3 mt-5 section border-color">
+    <h5 class="col-12 pb-3 border2" >Последние статьи</h5>
+    <div class="list-group">
+        @foreach (var th in Model.Item4)
+        {
+        <a class="list-group-item list-group-item-action p-0 tab-pane d-flex flex-row justify-content-between list" asp-controller="Thread" asp-action="Thread" asp-route-ID="@th.Id">
+            <div class="d-inline-flex ml-3">
+                <p>@th.Title</p>
+            </div>
+            <div class="rounded-right text-right mr-3 d-flex flex-row justify-content-between">
+                <div>@th.DataPublish.ToString("HH:mm")</div>
+                <div class="float-lg-right  ml-4">@th.Autor.Name</div>
+            </div>
+        </a>
+        }
+    </div>
+</div>

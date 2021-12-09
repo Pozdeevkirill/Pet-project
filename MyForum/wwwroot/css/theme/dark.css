@@ -1,0 +1,32 @@
+﻿body, .list {
+    background-color: #373737;
+    border-color: #2b2a2a;
+    color:#fff
+}
+
+header {
+    background-color: #212121;
+    color: #FFF;
+}
+
+.border-color {
+    background-color: #383838;
+    border-color: #1e1e1e;
+}
+
+.border2 {
+    border-bottom: 1px solid #1e1e1e;
+}
+
+.menu-bg-color {
+    background-color: #2e2e2e;
+    border-color: #1e1e1e;
+}
+
+.name {
+    color: #fff;
+}
+.list:hover {
+    color:#fff;
+    background-color: #4d4d4d;
+}
