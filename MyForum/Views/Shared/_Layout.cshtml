@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/spoiler.css" />
-    <link href="~/css/theme/dark.css" rel="stylesheet" />
+    <link href="~/css/theme/light.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -43,19 +43,19 @@
                                     <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-secondary btn-sm">Профиль</a>
                                 </span>
                             </div>
-                            <div class="">
+                            @*
+                                Блок смены темы
+                            
+                                *@
+                            @*<div class="">
                                 <div class="radio-toolbar-one">
-
-                                    <input class="color1"type="radio" id="radio1" name="radios-one" value="all" checked>
+                                    <input asp-controller="Home" asp-action="ChangeTheme" class="color1"type="submit" id="radio1" name="radios-one" value="light" checked>
                                     <label class="color1"for="radio1"></label>
 
-                                    <input class="color2" type="radio" id="radio2" name="radios-one" value="false">
+                                    <input asp-controller="Home" asp-action="ChangeTheme" class="color2" type="submit" id="radio2" name="radios-one" value="dark">
                                     <label class="color2" for="radio2"></label>
-
-
-
                                 </div>
-                            </div>
+                            </div>*@
                             <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary btn-sm">Logout</a>
                         </div>
                     </div>

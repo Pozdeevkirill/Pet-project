@@ -1,8 +1,9 @@
-﻿@model Tuple<Data.Models.User, Data.Models.Threads>
+﻿@model Tuple<Data.Models.User, Data.Models.Threads,MyForum.Data.Models.Comment>
 @using MyForum.Helpers
 @{
     ViewData["TItle"] = Model.Item2.Title;
 }
+<script src="~/js/ckeditor/ckeditor.js"></script>
 <div class="col-12 p-3 mt-5 " style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
     <div class="border-bottom col-12 pb-1">
         <h5>@Model.Item2.Title</h5>
@@ -13,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="row p-2 thread">
+    <div class="row p-2 thread ">
         <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <div class="message-inner max-width: 120px;max-height: 120px;" ">
                 <img src=@Model.Item2.Autor.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
@@ -41,4 +42,19 @@
             </div>
         </div>
     </div>
+    
 </div>
+<div class="p-3 mt-5 " style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
+    <div class="col-12 border-top m-0">
+        <div class="centered mt-4">
+            <textarea id="editor1" asp-for="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content"></span>
+        </div>
+    </div>
+    <div class="form-group mt-3 text-right mr-3">
+        <input asp-controller="Thread" asp-action="" value="Отправить" class="btn btn btn-primary" />
+    </div>
+</div>
+<script>
+        CKEDITOR.replace('editor1');
+</script>

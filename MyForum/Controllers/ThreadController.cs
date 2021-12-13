@@ -3,6 +3,7 @@ using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyForum.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,11 @@ namespace MyForum.Controllers
                     .Include(u => u.Autor.Avatar)
                     .Include(r => r.Autor.Role)
                     .FirstOrDefaultAsync(i => i.Id == id);
-            return View(Tuple.Create(user,th));
+            Comment com = await context.Comments
+                    .Include(u => u.Users)
+                    .Include(th => th.Thread)
+                    .FirstOrDefaultAsync(i => i.Thread.Id == th.Id);
+            return View(Tuple.Create(user,th,com));
         }
     }
 }

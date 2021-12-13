@@ -40,6 +40,12 @@ namespace MyForum.Controllers
             return View(Tuple.Create(user, changePassModel,list, list2));
         }
 
+        public async Task<IActionResult> ChangeTheme(string value)
+        {
+
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
