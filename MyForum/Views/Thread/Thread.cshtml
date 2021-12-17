@@ -1,60 +1,107 @@
-﻿@model Tuple<Data.Models.User, Data.Models.Threads,MyForum.Data.Models.Comment>
+﻿@model Tuple<Data.Models.User, Data.Models.Threads, List<MyForum.Data.Models.Comment>>
 @using MyForum.Helpers
 @{
     ViewData["TItle"] = Model.Item2.Title;
 }
 <script src="~/js/ckeditor/ckeditor.js"></script>
-<div class="col-12 p-3 mt-5 " style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
-    <div class="border-bottom col-12 pb-1">
-        <h5>@Model.Item2.Title</h5>
-        <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
-            <div class="ml-3">
-                <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
-                <label style="color: #8d9aa5;">@Model.Item2.DataPublish.ToString("dd.MM.yyyy HH:mm")</label>
-            </div>
-        </div>
-    </div>
-    <div class="row p-2 thread ">
-        <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <div class="message-inner max-width: 120px;max-height: 120px;" ">
-                <img src=@Model.Item2.Autor.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
-                <div class="mt-2 message-inner info-user flex-column">
-                    <h6 class="info-text font-weight-bold" style="line-height: 1;">@Model.Item2.Autor.Name</h6>
-                    @if (Model.Item2.Autor.Role.Name == "admin")
-                    {
-                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
-                    }
-                    else if (Model.Item2.Autor.Role.Name == "moder")
-                    {
-                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
-                    }
-                    else
-                    {
-                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
-                    }
-                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text">Автор темы</div>
+<form action="/" method="post">
+    <div class="col-12 p-3 mt-5 " style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
+        <div class="border-bottom col-12 pb-1">
+            <h5>@Model.Item2.Title</h5>
+            <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
+                <div class="ml-3">
+                    <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
+                    <label style="color: #8d9aa5;">@Model.Item2.DataPublish.ToString("dd.MM.yyyy | HH:mm")</label>
                 </div>
             </div>
         </div>
-        <div class="pl-5 pt-3 col-11 embed-responsive">
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="">
-                @Html.ThreadView(Model.Item2.Content)
+        <div class="row p-2 thread ">
+            <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="message-inner max-width: 120px;max-height: 120px;">
+                    <img src=@Model.Item2.Autor.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
+                    <div class="mt-2 message-inner info-user flex-column">
+                        <h6 class="info-text font-weight-bold" style="line-height: 1;">@Model.Item2.Autor.Name</h6>
+                        @if (Model.Item2.Autor.Role.Name == "admin")
+                        {
+                            <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
+                        }
+                        else if (Model.Item2.Autor.Role.Name == "moder")
+                        {
+                            <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
+                        }
+                        else
+                        {
+                            <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
+                        }
+                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text">Автор темы</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pl-5 pt-3 col-11 embed-responsive">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="">
+                    @Html.ThreadView(Model.Item2.Content)
+                </div>
             </div>
         </div>
     </div>
-    
-</div>
-<div class="p-3 mt-5 " style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
-    <div class="col-12 border-top m-0">
-        <div class="centered mt-4">
-            <textarea id="editor1" asp-for="Content" class="form-control"></textarea>
-            <span asp-validation-for="Content"></span>
+    <div class="p-3 mt-5" style="background-color: white; border: 3px solid #d8e3e6;border-radius:10px">
+        <div class="col-12 m-0">
+            @foreach (var com in Model.Item3)
+            {
+                if (com.Thread.Id == Model.Item2.Id)
+                {
+            <div class="row p-2 thread border-bottom">
+                <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="message-inner max-width: 120px;max-height: 120px;">
+
+                        <img src=@com.Users.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
+                        <div class="mt-2 message-inner info-user flex-column">
+                            <h6 class="info-text font-weight-bold" style="line-height: 1;">@com.Users.Name</h6>
+                            @if (com.Users.Role.Name == "admin")
+                            {
+                                <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
+                            }
+                            else if (com.Users.Role.Name == "moder")
+                            {
+                                <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
+                            }
+                            else
+                            {
+                                <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
+                            }
+                            <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text">Автор темы</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pl-5 col-11 embed-responsive">
+                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: flex;">
+                        @Html.CommentView(com.TextComment)
+                    </div>
+
+                </div>
+                <div class=" col-12 pb-1 rounded-right">
+                    <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
+                        <div class="ml-auto">
+                            <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
+                            <label style="color: #8d9aa5;">@com.Data.ToString("dd.MM.yyyy | HH:mm")</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                }
+            }
+        </div>
+        <div class="col-12 border-top m-0">
+            <div class="centered mt-4">
+                <textarea id="editor1" name="comment" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group mt-3 text-right mr-3">
+            <input asp-controller="Comments" asp-action="NewComment" asp-route-ID="@Model.Item2.Id" type="submit" value="Отправить" class="btn btn btn-primary" />
         </div>
     </div>
-    <div class="form-group mt-3 text-right mr-3">
-        <input asp-controller="Thread" asp-action="" value="Отправить" class="btn btn btn-primary" />
-    </div>
-</div>
+</form>
 <script>
-        CKEDITOR.replace('editor1');
+    CKEDITOR.replace('editor1');
 </script>

@@ -62,6 +62,10 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
+.content.data {
+    display: flex;
+    align-items: flex-end;
+}
 
 /* Sticky footer styles
 -------------------------------------------------- */

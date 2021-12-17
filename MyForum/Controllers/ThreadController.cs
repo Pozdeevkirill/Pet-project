@@ -67,10 +67,9 @@ namespace MyForum.Controllers
                     .Include(u => u.Autor.Avatar)
                     .Include(r => r.Autor.Role)
                     .FirstOrDefaultAsync(i => i.Id == id);
-            Comment com = await context.Comments
-                    .Include(u => u.Users)
-                    .Include(th => th.Thread)
-                    .FirstOrDefaultAsync(i => i.Thread.Id == th.Id);
+            var com = Enumerable.Reverse(await context.Comments
+                .Include(u => u.Users)
+                .Include(th => th.Thread).ToListAsync()).ToList();
             return View(Tuple.Create(user,th,com));
         }
     }
