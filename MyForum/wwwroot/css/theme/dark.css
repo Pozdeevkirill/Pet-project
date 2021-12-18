@@ -10,12 +10,14 @@ header {
 }
 
 .border-color {
-    background-color: #383838;
     border-color: #1e1e1e;
 }
 
 .border2 {
     border-bottom: 1px solid #1e1e1e;
+}
+.border3 {
+    border-top: 1px solid #1e1e1e;
 }
 
 .menu-bg-color {
@@ -29,4 +31,17 @@ header {
 .list:hover {
     color:#fff;
     background-color: #4d4d4d;
+}
+
+.th_bg {
+    background-color: #2e2e2e;
+    border: 3px solid #1e1e1e;
+    border-radius: 10px;
+}
+
+.close-color {
+    color:white;
+}
+.close-color:hover {
+    color: white;
 }

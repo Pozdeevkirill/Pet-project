@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyForum.Data.Models;
+using MyForum.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,10 +68,11 @@ namespace MyForum.Controllers
                     .Include(u => u.Autor.Avatar)
                     .Include(r => r.Autor.Role)
                     .FirstOrDefaultAsync(i => i.Id == id);
-            Comment com = await context.Comments
-                    .Include(u => u.Users)
-                    .Include(th => th.Thread)
-                    .FirstOrDefaultAsync(i => i.Thread.Id == th.Id);
+            var com = Enumerable.Reverse(await context.Comments
+               .Include(u => u.Users)
+               .Include(u => u.Users.Avatar)
+               .Include(u => u.Users.Role)
+               .Include(th => th.Thread).ToListAsync()).ToList();
             return View(Tuple.Create(user,th,com));
         }
         [HttpPost]
@@ -81,6 +83,19 @@ namespace MyForum.Controllers
                     .Include(u => u.Autor.Avatar)
                     .Include(r => r.Autor.Role)
                     .FirstOrDefaultAsync(i => i.Id == id);
+            var com = Enumerable.Reverse(await context.Comments
+               .Include(u => u.Users)
+               .Include(u => u.Users.Avatar)
+               .Include(u => u.Users.Role)
+               .Include(th => th.Thread).ToListAsync()).ToList();
+            foreach (var c in com)
+            {
+                if(c.Thread == th)
+                {
+                    context.Comments.Remove(c);
+                    await context.SaveChangesAsync();
+                }
+            }
             context.Threads.Remove(th);
             await context.SaveChangesAsync();
             User user = await context.Users
@@ -94,6 +109,7 @@ namespace MyForum.Controllers
             var list2 = Enumerable.Reverse(await context.Threads
                 .Include(u => u.Autor)
                 .ToListAsync()).Take(5).ToList();
+
             return RedirectToAction("Index", "Home");
         }
     }

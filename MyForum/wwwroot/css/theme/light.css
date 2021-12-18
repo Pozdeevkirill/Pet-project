@@ -13,6 +13,32 @@ header {
     border-radius: 10px;
 }
 
+.border-color {
+    border-color: #d8e3e6;
+}
+
+.border2 {
+    border-bottom: 1px solid #d8e3e6;
+}
+
+.border3 {
+    border-top: 1px solid #d8e3e6;
+}
+
 .name{
     color:#fff;
 }
+
+.th_bg {
+    background-color: white;
+    border: 3px solid #d8e3e6;
+    border-radius: 10px;
+}
+
+.close-color {
+    color: black;
+}
+
+    .close-color:hover {
+        color: black;
+    }
