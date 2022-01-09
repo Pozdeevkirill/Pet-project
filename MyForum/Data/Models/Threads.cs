@@ -14,5 +14,6 @@ namespace Data.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime LastUpdate { get; set; }
+        public int CommentType { get; set; }
     }
 }

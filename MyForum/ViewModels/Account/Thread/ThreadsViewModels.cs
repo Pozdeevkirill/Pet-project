@@ -18,5 +18,8 @@ namespace MyForum.ViewModels.Theme
         [MinLength(50, ErrorMessage = "Минимальное число символов: 50.")]
         public string Content { get; set; }
         public User Autor { get; set; }
+
+        [Required(ErrorMessage = "Обязательное поле!")]
+        public string CommentType { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace MyForum.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateThread(string title,string content)
+        public async Task<IActionResult> CreateThread(string title,string content, string commentType)
         {
             Threads th = await context.Threads.FirstOrDefaultAsync(u => u.Title == title);
             if(th == null)
@@ -41,6 +41,10 @@ namespace MyForum.Controllers
                      .Include(u => u.Role)
                      .FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
                     Threads thread = new Threads { Autor = user, Title = title, Content = content, DataPublish = DateTime.Now, LastUpdate = DateTime.Now};
+                    if (commentType == "Все пользователи")
+                        thread.CommentType = 1;
+                    else if(commentType == "Только модераторы и администраторы")
+                        thread.CommentType = 2;
                     context.Threads.Add(thread);
                     await context.SaveChangesAsync();
                 }

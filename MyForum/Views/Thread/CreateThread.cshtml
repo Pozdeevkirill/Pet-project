@@ -9,6 +9,13 @@
         <h5 class="border-bottom col-12 pb-3">Новая тема</h5>
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
+            <label for="exampleFormControlSelect1">Кто может оставлять комментарии:</label>
+            <select class="form-control" asp-for="CommentType">
+              <option>Все пользователи</option>
+              <option>Только модераторы и администраторы</option>
+            </select>
+         </div>
+        <div class="form-group">
             <div class="form-icon">
                 <input type="text" class="form-control input-lg" asp-for="Title" placeholder="Название темы">
                 <span class="text-danger" asp-validation-for="Title"></span>

@@ -198,26 +198,62 @@
                 }
             }
         </div>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <div class="col-12 border3 border-color m-0">
-                <div class="centered mt-4">
-                    <textarea id="editor1" name="comment" class="form-control"></textarea>
-                </div>
-            </div>
-            <div class="form-group mt-3 text-right mr-3">
-                <input asp-controller="Thread" asp-action="NewComment" asp-route-ID="@Model.Item2.Id" type="submit" value="Отправить" class="btn btn btn-primary" />
-            </div>
-        }
-        else
-        {
-            <div class="col-12 border3 border-color m-0">
-                <div class="centered mt-4">
-                    <span>Для того, чтобы комментировать записи, вам нужно <a asp-action="register" asp-controller="account">Зарегестрироваться</a> или <a asp-action="login" asp-controller="account">Войти</a></span>
-                </div>
-            </div>
-        }
 
+        @if(Model.Item2.CommentType == 1)
+        {
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="col-12 border3 border-color m-0">
+                    <div class="centered mt-4">
+                        <textarea id="editor1" name="comment" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group mt-3 text-right mr-3">
+                    <input asp-controller="Thread" asp-action="NewComment" asp-route-ID="@Model.Item2.Id" type="submit" value="Отправить" class="btn btn btn-primary" />
+                </div>
+            }
+            else
+            {
+                <div class="col-12 border3 border-color m-0">
+                    <div class="centered mt-4">
+                        <span>Для того, чтобы комментировать записи, вам нужно <a asp-action="register" asp-controller="account">Зарегестрироваться</a> или <a asp-action="login" asp-controller="account">Войти</a></span>
+                    </div>
+                </div>
+            }
+        }
+        else if(Model.Item2.CommentType == 2)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (Model.Item1.Role.Name == "admin" || Model.Item1.Role.Name == "moderator" || Model.Item1 == Model.Item2.Autor)
+                {
+                    <div class="col-12 border3 border-color m-0">
+                        <div class="centered mt-4">
+                            <textarea id="editor1" name="comment" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3 text-right mr-3">
+                        <input asp-controller="Thread" asp-action="NewComment" asp-route-ID="@Model.Item2.Id" type="submit" value="Отправить" class="btn btn btn-primary" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 border3 border-color m-0">
+                        <div class="centered mt-4">
+                            <span>К сожалению, автор ограничил доступ возможности оставлять комментарии к этой теме. <i class="far fa-frown"></i></span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 border3 border-color m-0">
+                    <div class="centered mt-4">
+                        <span>Для того, чтобы комментировать записи, вам нужно <a asp-action="register" asp-controller="account">Зарегестрироваться</a> или <a asp-action="login" asp-controller="account">Войти</a></span>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </form>
 <script>
