@@ -40,7 +40,7 @@ namespace MyForum.Controllers
                      .Include(u => u.Avatar)
                      .Include(u => u.Role)
                      .FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
-                    Threads thread = new Threads { Autor = user, Title = title, Content = content, DataPublish = DateTime.Now };
+                    Threads thread = new Threads { Autor = user, Title = title, Content = content, DataPublish = DateTime.Now, LastUpdate = DateTime.Now};
                     context.Threads.Add(thread);
                     await context.SaveChangesAsync();
                 }
@@ -111,6 +111,40 @@ namespace MyForum.Controllers
                 .ToListAsync()).Take(5).ToList();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> NewComment(int id, string comment)
+        {
+            if (comment != null)
+            {
+                Threads th = await context.Threads
+                        .Include(u => u.Autor)
+                        .Include(u => u.Autor.Avatar)
+                        .Include(r => r.Autor.Role)
+                        .FirstOrDefaultAsync(i => i.Id == id);
+                User user = await context.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.Avatar)
+                    .FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
+                Comment com = new Comment
+                {
+                    Data = DateTime.Now,
+                    TextComment = comment,
+                    Thread = th,
+                    Users = user
+                };
+
+
+                var com1 = Enumerable.Reverse(await context.Comments
+                   .Include(u => u.Users)
+                   .Include(u => u.Users.Avatar)
+                   .Include(u => u.Users.Role)
+                   .Include(th => th.Thread).ToListAsync()).ToList();
+                th.LastUpdate = DateTime.Now;
+                context.Comments.Add(com);
+                context.SaveChanges();
+            }
+            return RedirectToActionPermanent("thread", "thread", new { id = id});
         }
     }
 }

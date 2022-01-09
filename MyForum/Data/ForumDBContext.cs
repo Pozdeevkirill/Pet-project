@@ -16,6 +16,7 @@ namespace Data
         public DbSet<File> Files { get; set; }
         public DbSet<Threads> Threads { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserComment> UserComments { get; set; }
         public ForumDBContext(DbContextOptions<ForumDBContext> options) : base(options)
         {
             Database.EnsureCreated();

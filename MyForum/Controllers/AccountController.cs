@@ -202,6 +202,7 @@ namespace MyForum.Controllers
         }
         #endregion
         #region ChangePassword
+        [HttpPost]
         public async Task<IActionResult> ChangePassword(string CurentPassword, string Password, string ConfirmPassword)
         {
             User user = await context.Users

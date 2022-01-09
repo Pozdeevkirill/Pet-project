@@ -67,11 +67,14 @@ button.accept-policy {
     align-items: flex-end;
 }
 
+.list-group-hor{
+    flex-direction: row;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -126,7 +129,6 @@ p_menu {
     }
 }
 
-////
 .radio-toolbar-one input[type="radio"] {
     display: none;
 }
