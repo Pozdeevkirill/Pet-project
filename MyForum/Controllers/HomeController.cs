@@ -34,9 +34,12 @@ namespace MyForum.Controllers
             var list = Enumerable.Reverse(await context.Users
                 .Include(u => u.Avatar)
                 .Include(u => u.Role).ToListAsync()).Take(5).ToList();
-            var list2 = Enumerable.Reverse(await context.Threads
+            //var list2 = Enumerable.Reverse(await context.Threads
+            //    .Include(u => u.Autor)
+            //    .ToListAsync()).Take(5).ToList();
+            var list2 = context.Threads
                 .Include(u => u.Autor)
-                .ToListAsync()).Take(5).ToList();
+                .OrderByDescending(d => d.LastUpdate).Take(5).ToList();
             return View(Tuple.Create(user, changePassModel,list, list2));
         }
 

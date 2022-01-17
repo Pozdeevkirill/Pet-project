@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyForum.Data.Models;
 using MyForum.ViewModels;
 using MyForum.ViewModels.Account;
 using System;
@@ -224,12 +225,61 @@ namespace MyForum.Controllers
         #region User
         public async Task<IActionResult> UserView(int id)
         {
-            User user = await context.Users
-                      .Include(u => u.Role)
-                      .Include(u => u.Avatar)
-                      .FirstOrDefaultAsync(u => u.Id == id);
+            
+            User userView = await context.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.Avatar)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            User userIdentity = await context.Users
+                    .Include(u => u.Role)
+                    .Include(u => u.Avatar)
+                    .FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
+            //var comments = Enumerable.Reverse(await context.UserComments
+            //   .Include(u => u.User)
+            //   .Include(u => u.User.Avatar)
+            //   .Include(u => u.User.Role).ToListAsync());
+            var comments = Enumerable.Reverse(await context.UserComments
+                .Include(u => u.Autor)
+                .Include(u => u.Autor.Avatar)
+                .Include(u => u.Autor.Role)
+                .Include(u => u.User).ToListAsync()).ToList();
+            comments.RemoveAll(u => u.User != userView);
+            if (User.Identity.Name != userView.Name) 
+            {
+                return View(Tuple.Create(userView,userIdentity,comments));
+            }
+            else
+            {
+                return RedirectToAction("Profile");
+            }
 
-            return View(user);
+            
+        }
+        public async Task<IActionResult> AddUserComment(int id, string comment)
+        {
+            if (comment != null)
+            {
+                User user = await context.Users //Пользователь, которому отправляют комментарий
+                    .Include(u => u.Avatar)
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+                User autor = await context.Users //Пользователь, который отправляет комментарий
+                    .Include(u => u.Avatar)
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Name == User.Identity.Name);
+                UserComment com = new UserComment
+                {
+                    User = user,
+                    Autor = autor,
+                    Date = DateTime.Now,
+                    comment = comment
+                };
+
+                context.UserComments.Add(com);
+                context.SaveChanges();
+
+            }
+            return RedirectToActionPermanent("UserView", "Account", new { id = id });
         }
         #endregion
         [HttpGet]

@@ -77,21 +77,22 @@ namespace MyForum.Controllers
                .Include(u => u.Users.Avatar)
                .Include(u => u.Users.Role)
                .Include(th => th.Thread).ToListAsync()).ToList();
+            com.RemoveAll(u => u.Users != th.Autor);
             return View(Tuple.Create(user,th,com));
         }
         [HttpPost]
         public async Task<IActionResult> DeleteThread(int id)
         {
            Threads th = await context.Threads
-                    .Include(u => u.Autor)
-                    .Include(u => u.Autor.Avatar)
-                    .Include(r => r.Autor.Role)
-                    .FirstOrDefaultAsync(i => i.Id == id);
+                   .Include(u => u.Autor)
+                   .Include(u => u.Autor.Avatar)
+                   .Include(r => r.Autor.Role)
+                   .FirstOrDefaultAsync(i => i.Id == id);
             var com = Enumerable.Reverse(await context.Comments
-               .Include(u => u.Users)
-               .Include(u => u.Users.Avatar)
-               .Include(u => u.Users.Role)
-               .Include(th => th.Thread).ToListAsync()).ToList();
+                   .Include(u => u.Users)
+                   .Include(u => u.Users.Avatar)
+                   .Include(u => u.Users.Role)
+                   .Include(th => th.Thread).ToListAsync()).ToList();
             foreach (var c in com)
             {
                 if(c.Thread == th)
@@ -137,18 +138,17 @@ namespace MyForum.Controllers
                     Thread = th,
                     Users = user
                 };
-
-
-                var com1 = Enumerable.Reverse(await context.Comments
-                   .Include(u => u.Users)
-                   .Include(u => u.Users.Avatar)
-                   .Include(u => u.Users.Role)
-                   .Include(th => th.Thread).ToListAsync()).ToList();
                 th.LastUpdate = DateTime.Now;
                 context.Comments.Add(com);
                 context.SaveChanges();
             }
             return RedirectToActionPermanent("thread", "thread", new { id = id});
+        }
+
+        public async Task<IActionResult> Articles() 
+        {
+
+            return View();
         }
     }
 }

@@ -5,6 +5,7 @@
 }
 
 <script src="~/js/ckeditor/ckeditor.js"></script>
+
 <form action="/" method="post">
     <div class="col-12 p-3 mt-5 th_bg">
         <div class="border2 col-12 pb-1">
@@ -117,7 +118,6 @@
                     <label style="color: #8d9aa5;">@Model.Item2.DataPublish.ToString("dd.MM.yyyy | HH:mm")</label>
                 </div>
             </div>
-
         </div>
         <div class="row p-2 thread ">
             <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -153,53 +153,50 @@
         <div class="col-12 m-0">
             @foreach (var com in Model.Item3)
             {
-                if (com.Thread.Id == Model.Item2.Id)
-                {
-                    <div class="row p-2 thread border2">
-                        <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <div class="message-inner max-width: 120px;max-height: 120px;">
+                <div class="row p-2 thread border2">
+                    <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="message-inner max-width: 120px;max-height: 120px;">
 
-                                <img src=@com.Users.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
-                                <div class="mt-2 message-inner info-user flex-column">
-                                    <h6 class="info-text font-weight-bold" style="line-height: 1;">@com.Users.Name</h6>
-                                    @if (com.Users.Role.Name == "admin")
-                                    {
-                                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
-                                    }
-                                    else if (com.Users.Role.Name == "moderator")
-                                    {
-                                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
-                                    }
-                                    else
-                                    {
-                                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
-                                    }
-                                    @if (Model.Item2.Autor.Name == com.Users.Name)
-                                    {
-                                        <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text">Автор темы</div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pl-5 col-11 embed-responsive">
-                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: flex;">
-                                @Html.CommentView(com.TextComment)
-                            </div>
-                        </div>
-                        <div class=" col-12 pb-1 rounded-right">
-                            <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
-                                <div class="ml-auto">
-                                    <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
-                                    <label style="color: #8d9aa5;">@com.Data.ToString("dd.MM.yyyy | HH:mm")</label>
-                                </div>
+                            <img src=@com.Users.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
+                            <div class="mt-2 message-inner info-user flex-column">
+                                <h6 class="info-text font-weight-bold" style="line-height: 1;">@com.Users.Name</h6>
+                                @if (com.Users.Role.Name == "admin")
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
+                                }
+                                else if (com.Users.Role.Name == "moderator")
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
+                                }
+                                else
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
+                                }
+                                @if (Model.Item2.Autor.Name == com.Users.Name)
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text">Автор темы</div>
+                                }
                             </div>
                         </div>
                     </div>
-                }
+                    <div class="pl-5 col-11 embed-responsive">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: flex;">
+                            @Html.CommentView(com.TextComment)
+                        </div>
+                    </div>
+                    <div class=" col-12 pb-1 rounded-right">
+                        <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
+                            <div class="ml-auto">
+                                <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
+                                <label style="color: #8d9aa5;">@com.Data.ToString("dd.MM.yyyy | HH:mm")</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
 
-        @if(Model.Item2.CommentType == 1)
+        @if (Model.Item2.CommentType == 1)
         {
             @if (User.Identity.IsAuthenticated)
             {
@@ -221,7 +218,7 @@
                 </div>
             }
         }
-        else if(Model.Item2.CommentType == 2)
+        else if (Model.Item2.CommentType == 2)
         {
             if (User.Identity.IsAuthenticated)
             {

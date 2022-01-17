@@ -1,24 +1,94 @@
-﻿@model Data.Models.User
-
-@{ 
-    ViewData["Title"] = Model.Name;
+﻿@model Tuple<Data.Models.User,Data.Models.User,List<MyForum.Data.Models.UserComment>>
+@using MyForum.Helpers
+@{
+    ViewData["Title"] = Model.Item1.Name;
 }
-
+<script src="~/js/ckeditor/ckeditor.js"></script>
 
 <div class="row mt-5 p-2">
-    <div class="col-12 p-3 th_bg" >
-            <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                    <div class="media">
-                        <img src=@Model.Avatar.Path alt="Alternate Text" width="100 " height="100" class="mr-3 img-thumbnail" style="max-width:100px; max-height:100px;"/>
-                        <div class="media-body col-9">
-                            <h5 class="mt-0">@Model.Name</h5>
-                            <div>
-                                <p>@Model.Status</p>
-                            </div>
+    <div class="col-12 p-3 th_bg">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                <div class="media">
+                    <img src=@Model.Item1.Avatar.Path alt="Alternate Text" width="100 " height="100" class="mr-3 img-thumbnail" style="max-width:100px; max-height:100px;" />
+                    <div class="media-body col-9">
+                        <h5 class="mt-0">@Model.Item1.Name</h5>
+                        <div>
+                            <p>@Model.Item1.Status</p>
+                        </div>
+                        <div>
+                            <p>На сайте с @Model.Item1.RegisterData.ToString("dd.MM.yyyy")</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>
+<form action="/" method="post">
+    <div class="p-3 mt-5 th_bg">
+        <div class="col-12 m-0">
+            @foreach (var com in Model.Item3)
+            {
+                <div class="row p-2 thread border2">
+                    <div class="nav nav-pills col-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="message-inner max-width: 120px;max-height: 120px;">
+
+                            <img src=@com.Autor.Avatar.Path alt="Alternate Text" class="avatar mr-3 img-thumbnail m-auto" style="max-width:100px; max-height:100px; border-radius:300px;" />
+                            <div class="mt-2 message-inner info-user flex-column">
+                                <h6 class="info-text font-weight-bold" style="line-height: 1;">@com.Autor.Name</h6>
+                                @if (com.Autor.Role.Name == "admin")
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px" class="info-text text-danger font-weight-bold">Admin</div>
+                                }
+                                else if (com.Autor.Role.Name == "moderator")
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:blue" class="info-text font-weight-bold">Модератор</div>
+                                }
+                                else
+                                {
+                                    <div style="color: #8d9aa5; font-size: inherit; line-height: 1; font-size: 12px; color:Green" class="info-text font-weight-bold">Пользователь</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pl-5 col-11 embed-responsive">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="display: flex;">
+                            @Html.CommentView(com.comment)
+                        </div>
+                    </div>
+                    <div class=" col-12 pb-1 rounded-right">
+                        <div style="font-size: inherit; line-height: 1; font-size: 12px" class="row">
+                            <div class="ml-auto">
+                                <i class="fa--xf far fa-clock" style="color: #8d9aa5;" aria-hidden="true" title="Автор темы"></i>
+                                <label style="color: #8d9aa5;">@com.Date.ToString("dd.MM.yyyy | HH:mm")</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="col-12 border3 border-color m-0">
+                <div class="centered mt-4">
+                    <textarea id="editor1" name="comment" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group mt-3 text-right mr-3">
+                <input asp-controller="Account" asp-action="AddUserComment" asp-route-ID="@Model.Item1.Id" type="submit" value="Отправить" class="btn btn btn-primary" />
+            </div>
+        }
+        else
+        {
+            <div class="col-12 border3 border-color m-0">
+                <div class="centered mt-4">
+                    <span>Для того, чтобы оставить комментарий, вам нужно <a asp-action="register" asp-controller="account">Зарегестрироваться</a> или <a asp-action="login" asp-controller="account">Войти</a></span>
+                </div>
+            </div>
+        }
+    </div>
+</form>
+<script>
+    CKEDITOR.replace('editor1');
+</script>
